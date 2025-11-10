@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #002b55; /* Azul oscuro estilo PowerShell */
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: #0078d4;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #444;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        .command {
+            font-family: Consolas, 'Courier New', monospace;
+            background-color: #eef6fc;
+            color: #005a9e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #cce4f7;
+        }
+        .note {
+            font-size: 0.95em;
+            color: #555;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border-left: 4px solid #ccc;
+            margin-top: 5px;
+            display: block;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Conceptos powershell</h1>
+
+        <section>
+            <h2>1. Estructuras de Control y Menús</h2>
+            <p>Son la base para crear scripts interactivos que se repiten hasta que el usuario decide salir.</p>
+
+            <h3>Bucle Principal (Menú)</h3>
+            <ul>
+                <li>
+                    Usar <span class="command">do { ... } while ($op -ne "X")</span> mantiene el menú activo hasta que el usuario elige la opción de salida.
+                </li>
+            </ul>
+
+            <h3>Selección de Opciones</h3>
+            <ul>
+                <li>
+                    <span class="command">switch ($op) { ... }</span>: Estructura más limpia que múltiples 'if' para manejar las opciones del menú.
+                </li>
+            </ul>
+
+            <h3>Bucles de Datos</h3>
+            <ul>
+                <li>
+                    <span class="command">foreach ($i in $lista) { ... }</span>: Utilizado para iterar sobre listas, como usuarios importados desde un archivo CSV.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Entrada/Salida y Visualización</h2>
+            <p>Comandos básicos para interactuar con el usuario en la consola.</p>
+            <ul>
+                <li><span class="command">Write-Host "Mensaje"</span>: Escribe texto en la pantalla.</li>
+                <li><span class="command">Read-Host "Pregunta"</span>: Captura datos introducidos por el usuario.</li>
+                <li><span class="command">Clear-Host</span>: Limpia la pantalla para mantener el menú ordenado.</li>
+                <li><span class="command">Format-Table -AutoSize</span>: Muestra resultados en una tabla ordenada y legible.</li>
+                <li><span class="command">Write-Progress</span>: Muestra una barra de progreso visual para tareas largas.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Gestión del Sistema y Procesos</h2>
+            
+            <h3>Procesos</h3>
+            <ul>
+                <li><span class="command">Get-Process</span>: Lista los procesos activos.</li>
+                <li><span class="command">Stop-Process -Name "X"</span>: Detiene un proceso específico.</li>
+                <li><span class="command">Wait-Process</span>: Pausa el script hasta que un proceso termine.</li>
+                <li>
+                    <span class="command">Start-Process</span>: Inicia programas.
+                    <span class="note">Opciones útiles: <code>-WindowStyle Maximized</code> (pantalla completa) y <code>-Verb RunAs</code> (ejecutar como Administrador).</span>
+                </li>
+            </ul>
+
+            <h3>Otros Comandos de Sistema</h3>
+            <ul>
+                <li><span class="command">Get-LocalUser</span>: Muestra los usuarios locales de la máquina.</li>
+                <li><span class="command">Get-History</span>: Muestra el historial de comandos de la sesión actual.</li>
+                <li><span class="command">shutdown.exe /s /t 60</span>: Comando nativo para apagar el sistema (ej. en 60 segundos).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Active Directory (AD)</h2>
+            <p>Scripts enfocados en la gestión de usuarios y dominios en servidor.</p>
+
+            <h3>Información y Gestión</h3>
+            <ul>
+                <li><span class="command">Get-ADForest</span> / <span class="command">Get-ADDomain</span>: Obtiene información básica del bosque y dominio.</li>
+                <li><span class="command">New-ADUser</span>: Crea nuevos usuarios en el directorio activo.</li>
+                <li><span class="command">Remove-ADUser</span>: Elimina usuarios.</li>
+                <li><span class="command">Set-ADAccountPassword</span>: Modifica la contraseña de un usuario existente.</li>
+            </ul>
+
+            <h3>Operaciones Masivas y Seguridad</h3>
+            <ul>
+                <li><span class="command">Import-Csv</span>: Lee archivos de datos para realizar altas o bajas masivas en bucle.</li>
+                <li><span class="command">Read-Host -AsSecureString</span>: Pide una contraseña de forma segura (ocultando caracteres).</li>
+                <li><span class="command">ConvertTo-SecureString</span>: Convierte contraseñas de texto plano a formato seguro (necesario para <code>New-ADUser</code> al importar desde CSV).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Redes</h2>
+            <ul>
+                <li>
+                    <span class="command">Test-Connection -Quiet</span>: Realiza un ping. Con <code>-Quiet</code> devuelve <em>True/False</em> para usar en condicionales 'if'.
+                </li>
+                <li><span class="command">Get-NetAdapter</span>: Lista adaptadores (se puede filtrar por Wi-Fi usando <code>InterfaceType</code>).</li>
+                <li><span class="command">Get-NetIPAddress</span>: Obtiene la configuración IP (usualmente filtrando por IPv4).</li>
+                <li><span class="command">Get-NetRoute</span>: Muestra la tabla de enrutamiento.</li>
+                <li><span class="command">Disable-NetAdapterBinding</span>: Deshabilita elementos específicos (protocolos/servicios) de un adaptador de red.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Manejo de Errores y Varios</h2>
+            <ul>
+                <li>
+                    <span class="command">try { ... } catch { ... }</span>: Estructura fundamental para capturar errores y evitar que el script se detenga abruptamente, mostrando mensajes personalizados.
+                </li>
+                <li>
+                    <span class="command">Test-Path</span>: Verifica si un archivo existe antes de intentar usarlo (muy útil antes de un <code>Import-Csv</code>).
+                </li>
+                <li>
+                    <span class="command">Start-Sleep</span>: Pausa la ejecución del script durante un tiempo determinado (ej. milisegundos en barras de progreso).
+                </li>
+            </ul>
+        </section>
+
+        <footer>
+            Generado para estudio de PowerShell
+        </footer>
+    </div>
+
+</body>
+</html>
